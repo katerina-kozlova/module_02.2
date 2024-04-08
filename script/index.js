@@ -10,66 +10,96 @@ const discountInput = document.querySelector('.modal__input_discount');
 const overlay = document.querySelector('.overlay');
 overlay.classList.remove('active');
 
+const buttonOpenModal = document.querySelector('.panel__add-goods');
+buttonOpenModal.addEventListener('click', () => {
+    overlay.classList.add('active');
+});
+
+const buttonCloseModal = document.querySelector('.modal__close');
+buttonCloseModal.addEventListener('click', () => {
+    overlay.classList.remove('active');
+});
+
+overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+});
+
+const form = document.querySelector('.overlay__modal');
+form.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+// const createElem = (tag, attr, text) => {
+//     const elem = document.createElement(tag);
+//     if (text) {
+//         elem.textContent = text;
+//     } 
+//     if (attr) {
+//         
+//     }
+//     return elem;
+// }
+
 const createRow = (obj) => {
     const tableRow = document.createElement('tr');
-    const cellFirst = document.createElement('td');
-    const cellSecond = document.createElement('td');
-    const cellSecondSpan = document.createElement('span');
-    const cellThird = document.createElement('td');
-    const cellFourth = document.createElement('td');
-    const cellFIfth = document.createElement('td');
-    const cellSixth = document.createElement('td');
-    const cellSeventh = document.createElement('td');
-    const cellEighth = document.createElement('td');
+    const cellId = document.createElement('td');
+    const cellName = document.createElement('td');
+    const cellNameSpan = document.createElement('span');
+    const cellCategory = document.createElement('td');
+    const cellUnits = document.createElement('td');
+    const cellQuantity = document.createElement('td');
+    const cellPrice = document.createElement('td');
+    const cellCost = document.createElement('td');
+    const cellControls = document.createElement('td');
     const btnPic = document.createElement('button');
     const btnEdit = document.createElement('button');
     const btnDel = document.createElement('button');
 
-    cellFirst.textContent = obj.id;
-    cellFirst.classList.add('table__cell');
-    tableRow.append(cellFirst);
+    cellId.textContent = obj.id;
+    cellId.classList.add('table__cell');
 
-    cellSecond.classList.add('table__cell', 'table__cell_left', 'table__cell_name');
-    cellSecond.setAttribute('data-id', obj.id);
+    cellName.classList.add('table__cell', 'table__cell_left', 'table__cell_name');
+    cellName.setAttribute('data-id', obj.id);
 
-    cellSecondSpan.classList.add('table__cell-id');
-    cellSecondSpan.textContent = 'id: ' + obj.id;
-    cellSecond.append(cellSecondSpan);
-    cellSecond.append(document.createTextNode(obj.title));
-    tableRow.append(cellSecond);
+    cellNameSpan.classList.add('table__cell-id');
+    cellNameSpan.textContent = 'id: ' + obj.id;
+    cellName.append(cellNameSpan);
+    cellName.append(document.createTextNode(obj.title));
 
-    cellThird.classList.add('table__cell', 'table__cell_left');
-    cellThird.textContent = obj.category;
-    tableRow.append(cellThird);
+    cellCategory.classList.add('table__cell', 'table__cell_left');
+    cellCategory.textContent = obj.category;
 
-    cellFourth.classList.add('table__cell');
-    cellFourth.textContent = obj.units;
-    tableRow.append(cellFourth);
+    cellUnits.classList.add('table__cell');
+    cellUnits.textContent = obj.units;
 
-    cellFIfth.classList.add('table__cell');
-    cellFIfth.textContent = obj.count;
-    tableRow.append(cellFIfth);
+    cellQuantity.classList.add('table__cell');
+    cellQuantity.textContent = obj.count;
 
-    cellSixth.classList.add('table__cell');
-    cellSixth.textContent = '$' + obj.price;
-    tableRow.append(cellSixth);
+    cellPrice.classList.add('table__cell');
+    cellPrice.textContent = '$' + obj.price;
 
-    cellSeventh.classList.add('table__cell');
-    cellSeventh.textContent = `$${obj.price * obj.count}`;
-    tableRow.append(cellSeventh);
-
-    cellEighth.classList.add('table__cell', 'table__cell_btn-wrapper');
+    cellCost.classList.add('table__cell');
+    cellCost.textContent = `$${obj.price * obj.count}`;
 
     btnPic.classList.add('table__btn', 'table__btn_pic');
-    cellEighth.append(btnPic);
 
     btnEdit.classList.add('table__btn', 'table__btn_edit');
-    cellEighth.append(btnEdit);
 
     btnDel.classList.add('table__btn', 'table__btn_del');
-    cellEighth.append(btnDel);
 
-    tableRow.append(cellEighth);
+    cellControls.classList.add('table__cell', 'table__cell_btn-wrapper');
+    cellControls.append(btnPic, btnEdit, btnDel);
+
+    tableRow.append(
+        cellId,
+        cellName,
+        cellCategory,
+        cellUnits,
+        cellQuantity,
+        cellPrice,
+        cellCost,
+        cellControls
+    );
 
     return tableRow;
 };
