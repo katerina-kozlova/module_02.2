@@ -20,13 +20,12 @@ buttonCloseModal.addEventListener('click', () => {
     overlay.classList.remove('active');
 });
 
-overlay.addEventListener('click', () => {
-    overlay.classList.remove('active');
-});
-
-const form = document.querySelector('.overlay__modal');
-form.addEventListener('click', (e) => {
-    e.stopPropagation();
+overlay.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target === overlay ||
+        target.classList.contains('active')) {
+            overlay.classList.remove('active');
+        }
 });
 
 // const createElem = (tag, attr, text) => {
@@ -114,3 +113,20 @@ const renderGoods = (arr) => {
 };
 
 renderGoods(goods);
+
+const table = document.querySelector('.table__body');
+
+if (table) {
+    table.addEventListener('click', event => {
+        if (event.target.classList.contains('table__btn_del')) {
+            console.log('Click!');
+            const row = event.target.closest('tr');
+            const idRow = row.querySelector('.table__cell_name').getAttribute('data-id');
+            row.remove();
+            // Создать новый массив на основе существующего,
+            // исключая элемент с id, на котором произошло событие
+            const newGoods = goods.filter(item => item.id !== parseInt(idRow));
+            console.log(newGoods);
+        }
+    });
+};
