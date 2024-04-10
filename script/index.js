@@ -7,39 +7,34 @@ const formAddProduct = document.querySelector('.modal__form');
 const discountCheckbox = document.querySelector('#discount');
 const discountInput = document.querySelector('.modal__input_discount');
 
+const buttonOpenModal = document.querySelector('.panel__add-goods');
+const buttonCloseModal = document.querySelector('.modal__close');
 const overlay = document.querySelector('.overlay');
+
 overlay.classList.remove('active');
 
-const buttonOpenModal = document.querySelector('.panel__add-goods');
-buttonOpenModal.addEventListener('click', () => {
+const openModal = () => {
     overlay.classList.add('active');
+};
+buttonOpenModal.addEventListener('click', () => {
+    openModal();
 });
 
-const buttonCloseModal = document.querySelector('.modal__close');
-buttonCloseModal.addEventListener('click', () => {
+const closeModal = () => {
     overlay.classList.remove('active');
+};
+buttonCloseModal.addEventListener('click', () => {
+    closeModal();
 });
-
 overlay.addEventListener('click', (e) => {
     const target = e.target;
     if (target === overlay ||
         target.classList.contains('active')) {
-            overlay.classList.remove('active');
+            closeModal();
         }
 });
 
-// const createElem = (tag, attr, text) => {
-//     const elem = document.createElement(tag);
-//     if (text) {
-//         elem.textContent = text;
-//     } 
-//     if (attr) {
-//         
-//     }
-//     return elem;
-// }
-
-const createRow = (obj) => {
+const createRow = (obj, index) => {
     const tableRow = document.createElement('tr');
     const cellId = document.createElement('td');
     const cellName = document.createElement('td');
@@ -54,14 +49,14 @@ const createRow = (obj) => {
     const btnEdit = document.createElement('button');
     const btnDel = document.createElement('button');
 
-    cellId.textContent = obj.id;
     cellId.classList.add('table__cell');
+    cellId.textContent = index + 1;
 
     cellName.classList.add('table__cell', 'table__cell_left', 'table__cell_name');
     cellName.setAttribute('data-id', obj.id);
 
     cellNameSpan.classList.add('table__cell-id');
-    cellNameSpan.textContent = 'id: ' + obj.id;
+    cellNameSpan.textContent = `id: ${index + 1}`;
     cellName.append(cellNameSpan);
     cellName.append(document.createTextNode(obj.title));
 
@@ -106,8 +101,8 @@ const createRow = (obj) => {
 const renderGoods = (arr) => {
     const tableBody = document.querySelector('.table__body');
 
-    arr.map((obj) => {
-        const row = createRow(obj); 
+    arr.map((obj, index, title) => {
+        const row = createRow(obj, index, title); 
         tableBody.append(row);
     });
 };
@@ -133,3 +128,34 @@ if (table) {
         }
     });
 };
+
+const addGoodsPage = (tableRow, table, index) => {
+    table.append(createRow(tableRow, index));
+};
+
+const addGoodsData = (tableRow) => {
+    goods.push(tableRow);
+};
+
+const addGoods = () => {
+    formAddProduct.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const newGoods = {
+            id: formData.get('id'),
+            title: formData.get('name'),
+            category: formData.get('category'),
+            units: formData.get('units'),
+            discount: formData.get('discount'),
+            count: formData.get('count'),
+            price: formData.get('price'),
+            description: formData.get('description'),
+        };
+        const currentLength = goods.length;
+        addGoodsPage(newGoods, table, currentLength);
+        addGoodsData(newGoods);
+        formAddProduct.reset();
+        closeModal();
+    });
+};
+addGoods();
