@@ -28,8 +28,8 @@ const initialState = () => {
 buttonOpenModal.addEventListener('click', () => {
     openModal(overlay);
     initialState();
-    //addGoodsPage();
     calculateCost();
+    //addGoodsPage();
     activeCheckbox();
    // createRow();
 });
@@ -57,12 +57,13 @@ renderGoods(goods);
 const addGoodsPage = (tableRow, index) => {
     const productId = document.querySelector('.table__cell-id');
     productId.textContent = generateVendorCodeId();
-
+    //calculateCost();
     tableBody.append(createRow(tableRow, index));
 };
 
 // Добавить новый товар в массив товаров
 const addGoodsData = (tableRow) => {
+    //calculateCost();
     goods.push(tableRow);
 };
 
