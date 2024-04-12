@@ -1,12 +1,7 @@
 'use strict';
 
-// Сгенерировать случайный id для товара
-export const generateVendorCodeId = () => {
-    const randomNumber = Math.round(Math.random() * 100000000000000); // создать рандомное число и записать в константу
-    const vendorCodeId = document.querySelector('.vendor-code__id'); // найти разметку на странице, где будет записан id
-    vendorCodeId.textContent = randomNumber; // записать в эту разметку значение рандомным числом
-    return randomNumber; // вернем рандомное число
-};
+import { generateVendorCodeId } from './id.js'
+import goods from './goods.js';
 
 // Создать строку с новый товаром
 export const createRow = (obj, index) => {
@@ -51,7 +46,7 @@ export const createRow = (obj, index) => {
     cellPrice.textContent = '$' + obj.price;
 
     cellCost.classList.add('table__cell'); // посчитать итоговую стомость одного товара
-    cellCost.textContent = `$${obj.price * obj.count}`; // цена * количество
+    cellCost.textContent = `$${(obj.price * obj.count) - ((obj.price * obj.count) * (Number(obj.discount) * 0.01) || 0)}`;
 
     btnPic.classList.add('table__btn', 'table__btn_pic');
     btnEdit.classList.add('table__btn', 'table__btn_edit');

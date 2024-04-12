@@ -2,9 +2,12 @@
 
 import goods from './goods.js';
 import { openModal, closeModal, handleOverlayClose } from "./modal.js";
-import { createRow } from "./row.js";
+import { createRow } from "./createProduct.js";
+import { activeCheckbox } from './checkbox.js';
+import { calculateCost } from './cost.js';
+import { calculateTotalPrice } from './totalPrice.js';
+import { generateVendorCodeId } from './id.js';
 
-const modalTitle = document.querySelector('.modal__title');
 const formAddProduct = document.querySelector('.modal__form');
 const discountCheckbox = document.querySelector('#discount');
 const discountInput = document.querySelector('.modal__input_discount');
@@ -14,29 +17,28 @@ const buttonCloseModal = document.querySelector('.modal__close');
 const overlay = document.querySelector('.overlay');
 const tableBody = document.querySelector('.table__body');
 
-const totalPrice = document.querySelector('.cms__total-price');
-
-// Общая стоиомость всех товаров
-const calculateTotalPrice = () => {
-    const goods = document.querySelectorAll('.table__body tr'); // все строки с товарами
-    console.log(goods);
-    let totalCost = 0;
-    goods.forEach((goodsRow) => {
-        // в каждой строке находим столбец со стоимостью, его значение без знака $
-        const cost = goodsRow.querySelector('.table__cell:nth-child(7)').textContent.replace('$', '');
-        totalCost += Number(cost);
-    });
-    totalPrice.textContent = `$ ${totalCost}`; 
-};
-
 overlay.classList.remove('active');
+
+const initialState = () => {
+    discountInput.setAttribute('disabled', true);
+    discountInput.value = '';
+};
 
 // Обработчики открытия и закрытия модалки
 buttonOpenModal.addEventListener('click', () => {
     openModal(overlay);
+    initialState();
+    //addGoodsPage();
+    calculateCost();
+    activeCheckbox();
+   // createRow();
 });
 buttonCloseModal.addEventListener('click', () => {
     closeModal(overlay);
+    overlay.classList.remove('overlay_active');
+    discountInput.removeAttribute('disabled');
+    discountCheckbox.checked = false;
+    formAddProduct.reset();
 });
 overlay.addEventListener("mousedown", handleOverlayClose); 
 
@@ -53,6 +55,9 @@ renderGoods(goods);
 
 // Добавить новый товар на страницу
 const addGoodsPage = (tableRow, index) => {
+    const productId = document.querySelector('.table__cell-id');
+    productId.textContent = generateVendorCodeId();
+
     tableBody.append(createRow(tableRow, index));
 };
 
@@ -64,10 +69,6 @@ const addGoodsData = (tableRow) => {
 // Отправить форму добавления нового товара
 const handleFormAddSubmit = (e) => {
     e.preventDefault();
-    // создать id для нового товара
-    // const codeIdNewGoods = generateVendorCodeId(); 
-    // const cellNameSpan = document.querySelector('.table__cell-id');
-    // cellNameSpan.textContent = `id: ${codeIdNewGoods}`;
     // создать коллекцию данных
     const formData = new FormData(e.target);
     const newGoods = {
