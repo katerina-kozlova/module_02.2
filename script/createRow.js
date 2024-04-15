@@ -1,10 +1,10 @@
 'use strict';
 
-import { generateVendorCodeId } from './id.js'
+import { generateVendorCodeId } from './generateVendorCodeId.js'
 import goods from './goods.js';
 
 // Создать строку с новый товаром
-export const createRow = (obj, index) => {
+export const createRow = (obj, index, productId) => {
     // создать верстку для новой строки
     const tableRow = document.createElement('tr');
     const cellId = document.createElement('td');
@@ -16,6 +16,7 @@ export const createRow = (obj, index) => {
     const cellPrice = document.createElement('td');
     const cellCost = document.createElement('td');
     const cellControls = document.createElement('td');
+    const cellProductId = document.createElement('td');
     const btnPic = document.createElement('button');
     const btnEdit = document.createElement('button');
     const btnDel = document.createElement('button');
@@ -25,11 +26,11 @@ export const createRow = (obj, index) => {
     cellId.textContent = index + 1; // индекс товара из массива + 1
 
     cellName.classList.add('table__cell', 'table__cell_left', 'table__cell_name'); // наименова товара
-    cellName.setAttribute('data-id', obj.id); // добавить атрибуту значение порядкового номера товара
+    cellName.setAttribute('data-id', obj.id); // добавить атрибуту 
 
     cellNameSpan.classList.add('table__cell-id'); // создать id товара
-    const codeId = generateVendorCodeId(); // с помощью генерации числа
-    cellNameSpan.textContent = `id: ${codeId}`;
+    //const codeId = generateVendorCodeId(); // с помощью генерации числа
+    cellNameSpan.textContent = `id: ${obj.id}`;
     cellName.append(cellNameSpan);
     cellName.append(document.createTextNode(obj.title)); // в наименование добавить текст из массива
 
@@ -55,6 +56,9 @@ export const createRow = (obj, index) => {
     cellControls.classList.add('table__cell', 'table__cell_btn-wrapper');
     cellControls.append(btnPic, btnEdit, btnDel); // сгруппировать кнопки в один контейнер
 
+    cellProductId.classList.add('table__cell', 'table__cell-id');
+    cellProductId.textContent = `id: ${productId}`;
+
     // созданные элементы добавляем в одну строчку таблицы
     tableRow.append(
         cellId,
@@ -64,7 +68,8 @@ export const createRow = (obj, index) => {
         cellQuantity,
         cellPrice,
         cellCost,
-        cellControls
+        cellControls,
+        cellProductId
     );
 
     return tableRow; // возвращаем строчку таблицы с одним товаром

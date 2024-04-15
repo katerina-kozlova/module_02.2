@@ -2,11 +2,11 @@
 
 import goods from './goods.js';
 import { openModal, closeModal, handleOverlayClose } from "./modal.js";
-import { createRow } from "./createProduct.js";
-import { activeCheckbox } from './checkbox.js';
-import { calculateCost } from './cost.js';
-import { calculateTotalPrice } from './totalPrice.js';
-import { generateVendorCodeId } from './id.js';
+import { createRow } from "./createRow.js";
+import { activeCheckbox } from './activeCheckbox.js';
+import { calculateCost } from './calculateCost.js';
+import { calculateTotalPrice } from './calculateTotalPrice.js';
+import { generateVendorCodeId } from './generateVendorCodeId.js';
 
 const formAddProduct = document.querySelector('.modal__form');
 const discountCheckbox = document.querySelector('#discount');
@@ -16,6 +16,8 @@ const buttonOpenModal = document.querySelector('.panel__add-goods');
 const buttonCloseModal = document.querySelector('.modal__close');
 const overlay = document.querySelector('.overlay');
 const tableBody = document.querySelector('.table__body');
+
+const productId = overlay.querySelector('.vendor-code__id');
 
 overlay.classList.remove('active');
 
@@ -27,11 +29,10 @@ const initialState = () => {
 // Обработчики открытия и закрытия модалки
 buttonOpenModal.addEventListener('click', () => {
     openModal(overlay);
+    productId.textContent = generateVendorCodeId();
     initialState();
     calculateCost();
-    //addGoodsPage();
     activeCheckbox();
-   // createRow();
 });
 buttonCloseModal.addEventListener('click', () => {
     closeModal(overlay);
@@ -46,7 +47,8 @@ overlay.addEventListener("mousedown", handleOverlayClose);
 const renderGoods = (goods) => {
     // пройтись по каждому объекту(товару) из массива и его индексу
     goods.map((obj, index) => {
-        const row = createRow(obj, index); // создать строку 
+        console.log(productId)
+        const row = createRow(obj, index, productId); // создать строку 
         tableBody.append(row); // добавить в контейнер
     });
     calculateTotalPrice();
@@ -55,26 +57,27 @@ renderGoods(goods);
 
 // Добавить новый товар на страницу
 const addGoodsPage = (tableRow, index) => {
-    const productId = document.querySelector('.table__cell-id');
-    productId.textContent = generateVendorCodeId();
     //calculateCost();
-    tableBody.append(createRow(tableRow, index));
+    console.log(productId)
+    tableBody.append(createRow(tableRow, index, productId));
 };
 
 // Добавить новый товар в массив товаров
 const addGoodsData = (tableRow) => {
     //calculateCost();
+    console.log(goods);
     goods.push(tableRow);
 };
 
 // Отправить форму добавления нового товара
 const handleFormAddSubmit = (e) => {
     e.preventDefault();
+    const productIdPage = productId.textContent;
     // создать коллекцию данных
     const formData = new FormData(e.target);
     const newGoods = {
         // get(ключ) — возвращает первое значение ключа
-        id: formData.get('id'),
+        id: productIdPage,
         title: formData.get('name'),
         category: formData.get('category'),
         units: formData.get('units'),
