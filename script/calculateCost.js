@@ -6,7 +6,6 @@ export const calculateCost = () => {
     const priceInput = form.querySelector('input[name="price"]');
     const modalTotalPrice = form.querySelector('.modal__total-price');
     const discountInput = form.querySelector('.modal__input_discount');
-    //const sum = document.querySelector('.table__cell:nth-child(7)');
 
     const updateTotalPrice = () => {
         const count = countInput.value;
@@ -22,7 +21,6 @@ export const calculateCost = () => {
         }
         console.log(userDiscount);
         console.log(modalTotalPrice);
-        //sum.textContent = modalTotalPrice.textContent;
     };
 
     countInput.addEventListener('input', updateTotalPrice); // обработчик изменения для count

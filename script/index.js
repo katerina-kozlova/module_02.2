@@ -7,6 +7,7 @@ import { activeCheckbox } from './activeCheckbox.js';
 import { calculateCost } from './calculateCost.js';
 import { calculateTotalPrice } from './calculateTotalPrice.js';
 import { generateVendorCodeId } from './generateVendorCodeId.js';
+import { initialState } from './initialState.js';
 
 const formAddProduct = document.querySelector('.modal__form');
 const discountCheckbox = document.querySelector('#discount');
@@ -16,22 +17,18 @@ const buttonOpenModal = document.querySelector('.panel__add-goods');
 const buttonCloseModal = document.querySelector('.modal__close');
 const overlay = document.querySelector('.overlay');
 const tableBody = document.querySelector('.table__body');
-
 const productId = overlay.querySelector('.vendor-code__id');
+const modalPrice = overlay.querySelector('.modal__total-price');
 
 overlay.classList.remove('active');
-
-const initialState = () => {
-    discountInput.setAttribute('disabled', true);
-    discountInput.value = '';
-};
 
 // Обработчики открытия и закрытия модалки
 buttonOpenModal.addEventListener('click', () => {
     openModal(overlay);
     productId.textContent = generateVendorCodeId();
     initialState();
-    calculateCost();
+    modalPrice.textContent = calculateCost();
+    console.log(modalPrice);
     activeCheckbox();
 });
 buttonCloseModal.addEventListener('click', () => {
@@ -47,8 +44,7 @@ overlay.addEventListener("mousedown", handleOverlayClose);
 const renderGoods = (goods) => {
     // пройтись по каждому объекту(товару) из массива и его индексу
     goods.map((obj, index) => {
-        console.log(productId)
-        const row = createRow(obj, index, productId); // создать строку 
+        const row = createRow(obj, index, productId);
         tableBody.append(row); // добавить в контейнер
     });
     calculateTotalPrice();
@@ -57,15 +53,11 @@ renderGoods(goods);
 
 // Добавить новый товар на страницу
 const addGoodsPage = (tableRow, index) => {
-    //calculateCost();
-    console.log(productId)
     tableBody.append(createRow(tableRow, index, productId));
 };
 
 // Добавить новый товар в массив товаров
 const addGoodsData = (tableRow) => {
-    //calculateCost();
-    console.log(goods);
     goods.push(tableRow);
 };
 
@@ -73,6 +65,8 @@ const addGoodsData = (tableRow) => {
 const handleFormAddSubmit = (e) => {
     e.preventDefault();
     const productIdPage = productId.textContent;
+    const pagePrice = modalPrice.textContent;
+    console.log(pagePrice);
     // создать коллекцию данных
     const formData = new FormData(e.target);
     const newGoods = {
@@ -85,6 +79,7 @@ const handleFormAddSubmit = (e) => {
         count: formData.get('count'),
         price: formData.get('price'),
         description: formData.get('description'),
+        pagePrice: pagePrice, // !как вставить значение, если такого ключа нет в массиве с товаром?
     };
     const currentLength = goods.length;
     addGoodsPage(newGoods, currentLength);

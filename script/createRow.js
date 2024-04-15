@@ -1,8 +1,5 @@
 'use strict';
 
-import { generateVendorCodeId } from './generateVendorCodeId.js'
-import goods from './goods.js';
-
 // Создать строку с новый товаром
 export const createRow = (obj, index, productId) => {
     // создать верстку для новой строки
@@ -17,6 +14,7 @@ export const createRow = (obj, index, productId) => {
     const cellCost = document.createElement('td');
     const cellControls = document.createElement('td');
     const cellProductId = document.createElement('td');
+    //const cellDiscount = document.createElement('td');
     const btnPic = document.createElement('button');
     const btnEdit = document.createElement('button');
     const btnDel = document.createElement('button');
@@ -29,7 +27,6 @@ export const createRow = (obj, index, productId) => {
     cellName.setAttribute('data-id', obj.id); // добавить атрибуту 
 
     cellNameSpan.classList.add('table__cell-id'); // создать id товара
-    //const codeId = generateVendorCodeId(); // с помощью генерации числа
     cellNameSpan.textContent = `id: ${obj.id}`;
     cellName.append(cellNameSpan);
     cellName.append(document.createTextNode(obj.title)); // в наименование добавить текст из массива
