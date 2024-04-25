@@ -1,5 +1,3 @@
-'use strict';
-
 import { createRow } from "./createRow.js";
 import { renderTotalSum } from "./renderTotalSum.js";
 

@@ -1,10 +1,4 @@
-"use strict";
-
 import { formatPrice } from "./formatPrice.js";
-import { renderTotalSum } from "./renderTotalSum.js";
-import getDocumentElements from "./getDocumentElements.js";
-
-import goods from "../goods.js";
 
 // Создать строку с новым товаром
 export const createRow = (obj, index) => {
@@ -17,9 +11,6 @@ export const createRow = (obj, index) => {
   let sum = obj.price * obj.count;
   // скидка есть
   sum -= (sum * obj.discount) / 100;
-
-  const elements = getDocumentElements(); // Элементы , это наш объект элементов со страницы, с ним и будем работать, один раз все нашли , и больше не путаемся
-  const data = goods; // Наши стратовые товары для вывода, получили из файла
 
   // создать верстку для новой строки
   const tableRow = document.createElement("tr");
@@ -62,25 +53,10 @@ export const createRow = (obj, index) => {
 
   cellCost.classList.add("table__cell"); // посчитать итоговую стомость одного товара
   cellCost.textContent = `$${formatPrice(sum)}`;
-  //cellCost.textContent = `$${(obj.price * obj.count) - ((obj.price * obj.count) * (Number(obj.discount) * 0.01) || 0)}`;
 
   btnPic.classList.add("table__btn", "table__btn_pic");
   btnEdit.classList.add("table__btn", "table__btn_edit");
   btnDel.classList.add("table__btn", "table__btn_del");
-  btnDel.addEventListener('click', (event) => { 
-    const row = event.target.closest('tr'); 
-    const idRow = row.querySelector('.table__cell_name').getAttribute('data-id'); 
-
-    // Удаление строки из таблицы 
-    row.remove(); 
-
-    // Удаление товара из массива goods 
-    const index = goods.findIndex((item) => item.id === Number(idRow)); 
-    goods.splice(index, 1); 
-
-    // Обновление общей суммы 
-    renderTotalSum(data, elements); 
-});
 
   cellControls.classList.add("table__cell", "table__cell_btn-wrapper");
   cellControls.append(btnPic, btnEdit, btnDel); // сгруппировать кнопки в один контейнер

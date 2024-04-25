@@ -1,5 +1,3 @@
-'use strict';
-
 const getDocumentElements = () => {
   // Находим элементы на странице ==============================
   const addNewProductBtn = document.querySelector(".panel__add-goods"); //Кнопка добавить товар

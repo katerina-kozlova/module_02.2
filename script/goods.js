@@ -1,5 +1,3 @@
-'use strict';
-
 const goods = [
     {
       "id": 1,
