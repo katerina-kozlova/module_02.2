@@ -60,14 +60,11 @@ export const overlayControls = (elements, data) => {
   elements.modalForm.addEventListener("submit", (e) => {
     //Убрали перезагрузку
     e.preventDefault();
-    // Проверили что падает в data
-    console.log("form submit");
     // Добавили в data
     addGoodsData(elements, data);
     // Закрыли модалку
     closeModal();
     // Пересчетали сумму
     renderTotalSum(data, elements);
-    console.log(`data после добавления товара`, data);
   });
 };

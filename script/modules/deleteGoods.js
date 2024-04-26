@@ -7,5 +7,4 @@ export const deleteGoods = (targetProductRow, productId, data, elements) => {
     const index = data.findIndex((item) => item.id === productId);
     data.splice(index, 1);
     renderTotalSum(data, elements);
-    console.log(`data после удаления товара`, data);
 };
